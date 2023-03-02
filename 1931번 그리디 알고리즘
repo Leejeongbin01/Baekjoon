@@ -1,0 +1,39 @@
+// 벡터안에 값을 넣고 정렬을 함
+// 그리디 알고리즘으로 매 순간 최선의 선택만하게끔 
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+vector<pair<int,int>> v;
+
+int main()
+{
+	int n;
+	cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+		int a, b;
+		cin >> a >> b;
+		v.push_back(make_pair(b, a));
+		// 시작시간과 끝나는 시간을 바꿔줌
+	}
+	
+	sort(v.begin(), v.end());
+	// 끝나는 순서대로 정렬
+	int max = v[0].first;
+	int cnt = 1;
+
+	for (int i = 1; i < n; i++)
+	{
+		if (v[i].second >=max)
+		{
+			cnt++;
+			max = v[i].first;
+		}
+		//만약 끝나는 시간보다 큰 시작 시간이 있으면 참임
+		// cnt++해주고 끝나는 시간을 다시 max로 지정
+	}
+	cout << cnt;
+	return 0;
+}
