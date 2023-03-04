@@ -1,0 +1,68 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+// 들어간 곳은 리턴하고 처음인곳은 체크하면 끝남
+int array[51][51];
+bool check[51][51];
+int tmpX[4] = { -1,1,0,0 };
+int tmpY[4] = { 0,0,1,-1 };
+int m, n, k;
+void dfs(int x, int y)
+{
+	check[x][y] = true;
+
+	for (int i = 0; i < 4; i++)
+	{
+		int fx = x + tmpX[i];
+		int fy = y + tmpY[i];
+		if (fx >= 0 && fx < n && fy >= 0 && fy < m) {
+			if (::array[fx][fy] == 1)
+			{
+				if (!check[fx][fy])
+				{
+					dfs(fx, fy);
+				}
+			}
+		}
+		else
+		{
+			continue;
+		}
+	}
+}
+
+int main()
+{
+	int t;
+	cin >> t;
+	while (t--)
+	{
+		cin >> m >> n >> k;
+		int cnt = 0;
+		for (int i = 0; i < k; i++)
+		{
+			int a, b;
+			cin >> a >> b;
+			::array[b][a] = 1;
+		}
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < m; j++)
+			{
+				if (::array[i][j] == 1)
+				{
+					if (!check[i][j])
+						// 기본이 false이니 들어가지 않은경우 참으로 나오게끔
+					{
+						cnt++;
+						dfs(i, j);
+					}
+				}
+			}
+		}
+		cout << cnt << "\n";
+		memset(check, false, sizeof(check));
+		memset(::array, 0, sizeof(::array));
+	}
+}
