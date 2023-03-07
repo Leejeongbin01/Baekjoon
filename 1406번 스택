@@ -1,0 +1,56 @@
+#include <stack>
+#include <iostream>
+#include <string>
+using namespace std;
+
+stack<char> left1, right1;
+string s = "";
+
+int main() {
+	int n;
+	string s;
+	cin >> s >> n;
+
+	for (int i = 0; i < s.size(); i++)
+	{
+		left1.push(s[i]);
+	}
+	while (n--) {
+		string tmp;
+		cin >> tmp;
+		if (tmp == "L") {
+			if (!left1.empty()) {
+				char tmp1 = left1.top();
+				right1.push(tmp1);
+				left1.pop();
+			}
+		}
+		else if (tmp == "D") {
+			if (!right1.empty()) {
+				char tmp1 = right1.top();
+				left1.push(tmp1);
+				right1.pop();
+			}
+		}
+		else if (tmp == "B") {
+			if (!left1.empty()) {
+				left1.pop();
+			}
+		}
+
+		else if (tmp == "P") {
+			char tmp1;
+			cin >> tmp1;
+			left1.push(tmp1);
+		}
+	}
+	while (!left1.empty()) {
+		right1.push(left1.top());
+		left1.pop();
+	}
+	while (!right1.empty()) {
+		cout << right1.top();
+		right1.pop();
+	}
+	return 0;
+}
