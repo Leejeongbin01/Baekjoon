@@ -1,0 +1,61 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+//비트 마스크로 풀기
+
+int main()
+{
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	int s = 0;
+	int n;
+	cin >> n;
+	string str;
+	int x;
+
+	while (n--) {
+		cin >> str;
+		if (str == "add") {
+			cin >> x;
+			s |= (1 << x);
+			//s에 x를 추가함
+		}
+		else if (str == "remove") {
+			cin >> x;
+			s &= ~(1 << x);
+			// s에 x를 제거함
+		}
+		else if (str == "check") {
+			cin >> x;
+			if (s & (1 << x)) {
+				//x가 있으면
+				cout << "1\n";
+			}
+			else {
+				//x가 없으면
+				cout << "0\n";
+			}
+		}
+		else if (str == "toggle")
+		{
+			cin >> x;
+			if (s & (1 << x)) {
+				// x가 있으면 x를 제거
+				s &= ~(1 << x);
+			}
+			else {
+				//없으므로 
+				s |= (1 << x);
+			}
+		}
+		else if (str == "all") {
+				s = (1 << 21) - 1;
+		}
+		else if (str == "empty") {
+			s = 0;
+			//모든 원소 지우기
+		}
+	}
+
+}
