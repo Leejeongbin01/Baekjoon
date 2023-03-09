@@ -1,0 +1,55 @@
+#include <iostream>
+#include <queue>
+#include <algorithm>
+using namespace std;
+
+vector<int> v[1001];
+int visited[1001] = { 0, };
+int cnt = 0;
+
+void dfs(int x)
+{
+	if (visited[x] == 1)
+	{
+		return;
+	}
+	visited[x] = 1;
+	for (int i = 0; i < v[x].size(); i++)
+	{
+		dfs(v[x][i]);
+	}
+}
+// 방문하지 않은 노드에 대해 재귀
+
+int main()
+{
+	int n, m;
+	cin >> n >> m;
+
+	for (int i = 0; i < m; i++)
+	{
+		int a, b;
+		cin >> a >> b;
+		v[a].push_back(b);
+		v[b].push_back(a);
+	}
+	for (int i = 1; i <= n; i++)
+	{
+		sort(v[i].begin(), v[i].end());
+	}
+	
+	// 만약 i번째가 방문을 하지 않았다면 연결이 되지 않았으므로
+	// cnt++를 해주고 dfs(i)를 해준다.
+	for (int i = 1; i <= n; i++)
+	{
+		if (visited[i] == 0)
+		{
+			cnt++;
+			dfs(i);
+			
+		}
+	}
+
+	cout << cnt;
+	return 0;
+}
