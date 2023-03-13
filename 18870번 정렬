@@ -1,0 +1,97 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+//int a[1000001];
+//int memory[1000001];
+//int index_memory[1000001];
+//int tmp1[1000001];
+//
+//int main()
+//{
+//	ios::sync_with_stdio(false);
+//	cin.tie(NULL);
+//	int n;
+//	cin >> n;
+//	int index = 0;
+//	int cnt = 0;
+//
+//	for (int i = 0; i < n; i++) {
+//		int x;
+//		cin >> x;
+//		a[i] = x;
+//		index_memory[i] = x;
+//	}
+//
+//	sort(a, a + n);
+//	// -10,-9,2,4,4
+//	for (int i = 0; i < n; i++)
+//	{
+//		int fuck = 0;
+//		for (int j = 1; j < n; j++)
+//		{
+//			fuck++;
+//			if (index_memory[i] == a[j]) {
+//				
+//				tmp1[i] = fuck;
+//				break;
+//			}
+//		}
+//	}
+//	memory[index] = cnt;
+//	for (int i = 1; i <n; i++)
+//	{
+//		if (a[i - 1] == a[i])
+//		{
+//			memory[++index] = cnt;
+//		}
+//		else
+//		{
+//			memory[++index] = ++cnt;
+//		}
+//	}
+//
+//	// 0 1 2 3 3 이렇게 출력이 나옴
+//	// 원래 순서대로 출력만 하면 끝
+//
+//	for (int i = 0; i < n; i++)
+//	{
+//		cout << memory[tmp1[i]] << " ";
+//	}
+//	return 0;
+//}
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+	int n;
+	cin >> n;
+
+	vector<int> v(n);
+	for (int i = 0; i < n; i++)
+	{
+		cin >> v[i];
+	}
+	vector<int> mem(v);
+	// 원본은 mem에 복사해서 index를 알아내자
+	sort(mem.begin(), mem.end());
+	mem.erase(unique(mem.begin(), mem.end()), mem.end());
+	// 중복된 값 다 뒤로보내고 제거
+	// v에 남아있는 건 -10,-9,2,4
+
+	for (int i = 0; i < n; i++)
+	{
+		auto it = lower_bound(mem.begin(), mem.end(), v[i]);
+		// v[i]의 값이 mem에서는 몇 번쨰의 위치에 존재하는지..
+		cout << it - mem.begin() << " ";
+		// 주소값이므로 it-mem을 하면 3,1, 이렇게 값이 나옴
+	}
+	return 0;
+}
