@@ -1,0 +1,43 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+vector<int> v;
+int a[8];
+int n,m;
+int visit[8] = { 0 };
+
+void dfs(int x) {
+	if (x == m) {
+		for (int i = 0; i <v.size(); i++)
+		{
+			cout << v[i] << " ";
+		}
+		cout << "\n";
+		return;
+	}
+
+	for (int i = 0; i < n; i++)
+	{
+		if (visit[i] == 1) {
+			continue;
+		}
+		visit[i] = 1;
+		v.push_back(a[i]);
+		dfs(x + 1);
+		v.pop_back();
+		visit[i] = 0;
+	}
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	cin >> n >> m;
+	for (int i = 1; i <= n; i++) {
+		a[i - 1] = i;
+	}
+	dfs(0);
+	return 0;
+}
