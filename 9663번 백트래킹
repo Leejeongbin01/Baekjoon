@@ -1,0 +1,44 @@
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+using namespace std;
+
+int n,cnt;
+int col[15];
+int visit[15];
+
+int possible(int x) {
+	for (int i = 0; i < x; i++) {
+		if ((col[x] == col[i]) || (x - i == (abs(col[i] - col[x])))) {
+			//같은 행이 같으면 리턴
+			// 대각선값이 있으면 리턴
+			return 0;
+		}
+	}
+	return 1;
+}
+
+void nqueen(int x) {
+	if (x == n)
+	{
+		cnt++;
+		return;
+	}
+	for (int i = 0; i < n; i++) {
+		col[x] = i;
+		// 0열부터 0번쨰 위치를 주면서 백트래킹 시작하라
+		if (possible(x)) {
+			// x행의 위치가 가능하면 재귀
+			nqueen(x + 1);
+		}
+	}
+}
+int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	cout.tie(NULL);
+	cin >> n;
+	nqueen(0);
+	cout << cnt;
+	return 0;
+}
