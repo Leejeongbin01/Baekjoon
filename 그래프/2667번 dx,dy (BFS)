@@ -1,0 +1,66 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int n;
+string Array[26];
+int cnt = 0; //단지수를 체크
+bool cntArray[26][26]={0,}; //방문 체크
+int dx[4] = {-1,1,0,0};
+int dy[4] = { 0,0,-1,1 };
+vector<int> result;
+
+void bfs(int a,int b) {
+	queue<pair<int,int>> q;
+	cntArray[a][b] = true;
+	q.push({ a,b });
+	cnt++;
+
+	
+	while (!q.empty()) {
+		int tmpFirst = q.front().first;
+		int tmpSecond = q.front().second;
+		q.pop();
+
+		for (int i = 0; i < 4; i++) {
+			int tmpFirstX = tmpFirst + dx[i];
+			int tmpSecondY = tmpSecond + dy[i];
+			if (tmpFirstX >= 0 && tmpSecondY >= 0 && tmpFirstX < n && tmpSecondY < n
+				&& cntArray[tmpFirstX][tmpSecondY] == false
+				&&Array[tmpFirstX][tmpSecondY]=='1') {
+				q.push({ tmpFirstX,tmpSecondY });
+				cntArray[tmpFirstX][tmpSecondY] = true;
+				cnt++;
+
+			}
+		}
+	}
+}
+
+int main() {
+	cin >> n;
+
+	for (int i = 0; i < n; i++) {
+		cin >> Array[i];
+	}
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (cntArray[i][j] == false &&Array[i][j]=='1') {
+				cnt = 0;
+				bfs(i, j);
+				result.push_back(cnt);
+			}
+		}
+	}
+
+	sort(result.begin(), result.end());
+
+	cout << result.size() << endl;
+	for (int i = 0; i <result.size(); i++) {
+		cout << result[i] << endl;
+	}
+	return 0;
+}
