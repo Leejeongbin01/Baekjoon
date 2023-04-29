@@ -1,0 +1,48 @@
+#include <iostream>
+#include <queue>
+using namespace std;
+
+int n, m;
+int Array[102];
+bool visited[102];
+
+void bfs(int x, int c) {
+	queue<pair<int, int>> q;
+	q.push({ x,c });
+	visited[x] = true;
+
+	while (!q.empty()) {
+		int tmpx = q.front().first;
+		int cnt = q.front().second;
+		q.pop();
+
+		for (int i = 1; i <= 6; i++) {
+			int nx = tmpx + i;
+			if(nx==100){
+				cout << cnt + 1;
+				return;
+			}
+			else if (nx < 100) {
+				while (Array[nx] != 0) {
+					nx = Array[nx];
+					//제일 중요한 부분
+				}
+				if (!visited[nx]) {
+					q.push({ nx,cnt + 1 });
+					visited[nx] = true;
+				}
+			}
+		}
+	}
+}
+
+int main() {
+	cin >> n >> m;
+	int t1, t2;
+	for (int i = 0; i < n + m; i++) {
+		cin >> t1 >> t2;
+		Array[t1] = t2;
+	}
+	bfs(1, 0);
+	return 0;
+}
