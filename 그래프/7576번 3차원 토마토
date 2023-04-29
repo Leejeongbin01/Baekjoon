@@ -1,0 +1,68 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+using namespace std;
+
+int m, n, h, ans, Array[102][102][102];
+int dx[] = { 0,0,1,-1,0,0 };
+int dy[] = { 1,-1,0,0,0,0 };
+int dh[] = { 0,0,0,0,1,-1 };
+queue<pair<pair<int, int>, int>> q;
+
+void bfs() {
+	while (!q.empty()) {
+        int x = q.front().first.first;
+        int y = q.front().first.second;
+		int hh = q.front().second;
+		q.pop();
+
+		for (int i = 0; i < 6; i++) {
+			int nh = hh + dh[i];
+			int ny = y + dy[i];
+			int nx = x + dx[i];
+			
+			if (nx >= 0 && ny >= 0 && nh >= 0 && nx < n && ny < m && nh < h && Array[nx][ny][nh] == 0) {
+                Array[nx][ny][nh] = Array[x][y][hh] + 1;
+                q.push(make_pair(make_pair(nx, ny), nh));
+				
+			}
+		}
+	}
+}
+
+
+int main()
+{
+    cin >> m >> n >> h;
+    for (int k = 0; k < h; k++) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                cin >> Array[i][j][k];
+                if (Array[i][j][k] == 1) {
+                    q.push(make_pair(make_pair(i, j), k));
+                }
+            }
+        }
+    }
+
+    bfs();
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            for (int k = 0; k < h; k++) {
+                if (Array[i][j][k] == 0) {
+                    cout << -1;
+                    return 0;
+                }
+                else {
+                    ans = max(Array[i][j][k], ans);
+                }
+            }
+
+        }
+    }
+
+    cout << ans - 1;
+
+    return 0;
+}
