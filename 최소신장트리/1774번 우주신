@@ -1,0 +1,83 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+
+vector<pair<int, int>> map;
+vector<pair<double, pair<int, int>>> v;
+int parent[1001];
+
+int find(int x) {
+	if (parent[x] == x) {
+		return x;
+	}
+	return parent[x] = find(parent[x]);
+}
+
+double cal(double x1, double y1, double x2, double y2) {
+	double x = pow(x1 - x2, 2);
+	double y = pow(y1 - y2, 2);
+	return sqrt(x + y);
+}
+
+int main() {
+	int n, m;
+	cin >> n >> m;
+
+
+	// 디버깅시 런타임 오류때문 
+
+	for (int i = 0; i < n; i++) {
+		int a, b;
+		cin >> a >> b;
+		map.push_back({ a,b });
+	}
+
+	for (int i = 1; i <= n; i++) {
+		parent[i] = i;
+	}
+	// 최정점은 자기 자신으로
+	for (int i = 0; i < m; i++) {
+		int a, b;
+		cin >> a >> b;
+		a = find(a);
+		b = find(b);
+		if (a != b) {
+			parent[a] = b;
+		}
+	}
+	for (int i = 0; i < n - 1; i++) {
+		for (int j = i + 1; j < n; j++) {
+			double r = cal(map[i].first, map[i].second,
+				map[j].first, map[j].second);
+			v.push_back({ r,{i+1,j+1} }); // 실수한 부분 
+			// 각 점들과의 거리값(가중치) 
+
+		}
+	}
+	sort(v.begin(), v.end());
+
+	double ans = 0;
+	
+	for (int i = 0; i < v.size(); i++) {
+		int tmpx = v[i].second.first;
+		int tmpy = v[i].second.second;
+		double r = v[i].first;
+
+		int x = find(tmpx);
+		int y = find(tmpy);
+
+		if (x != y) {
+			parent[x] = y;
+			ans += r;
+		
+		}
+
+	}
+	cout << fixed;
+	cout.precision(2);
+	cout <<ans;
+	return 0;
+}
