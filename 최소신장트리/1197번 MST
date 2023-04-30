@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+// MST알고리즘
+// 1. 가중치>> 오름차순 정렬
+// 2. 각 정점은 자신을 향해야함 
+// 3. 사이클 돌면 안됨 >> 같은 구간이면 안됨( 점의 최정점이 달라야함)
+
+vector < pair<int, pair<int, int>>> v;
+int Array[10001];
+
+int find(int x) {
+	if (Array[x] == x) {
+		return x;
+	}
+	else return Array[x] = find(Array[x]);
+}
+// 각 점의 최정점이 무엇인지 알아내는 용도
+
+void uni(int x, int y) {
+	x = find(x);
+	y = find(y);
+	Array[y] = x;
+}
+// 분리되어 있던 점을 연결 시켜준다. 
+// 최정점을 수정해줌
+
+bool same(int x, int y) {
+	x = find(x);
+	y = find(y);
+	if (x == y) {
+		// 최정점이 같다는 말로 사이클을 돈다.
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+// 사이클 도는지 안 도는지
+
+int main() {
+	int ver, e, sum=0;
+	cin >> ver >> e;
+
+	for (int i = 0; i < e; i++) {
+		int a, b, c;
+		cin >> a >> b >> c;
+		v.push_back({ c,{a,b} });
+	}
+	
+	for (int i = 1; i < ver; i++) {
+		Array[i] = i;
+	}
+	// 각 정점은 자신을 향하게 (모두 독립적이게)
+
+	sort(v.begin(), v.end()); 
+	// 오름차순 정렬
+
+	for (int i = 0; i < e; i++) {
+		if (!same(v[i].second.first, v[i].second.second)) {
+			uni(v[i].second.first, v[i].second.second);
+			sum += v[i].first;
+		}
+	}
+	cout << sum;
+	return 0;
+}
