@@ -1,0 +1,45 @@
+#include <iostream>
+#define MAX 987654321
+using namespace std;
+
+int Array[401][401];
+
+int main() {
+	int V, E;
+	cin >> V >> E;
+
+
+
+	for (int i = 0; i < E; i++) {
+		int a, b, c;
+		cin >> a >> b >> c;
+		Array[a][b] = c;
+	}
+	for (int i = 1; i <= V; i++) {
+		for (int j = 1; j <= V; j++) {
+			if (Array[i][j] == 0) {
+				Array[i][j] = MAX;
+			}
+		}
+	}
+	int cnt = MAX;
+	for (int k = 1; k <= V; k++) {
+		for (int i = 1; i <= V; i++) {
+			for (int j = 1; j <= V; j++) {
+				if (Array[i][j] > Array[i][k] + Array[k][j]) {
+					Array[i][j] = Array[i][k] + Array[k][j];
+					if (i == j) {
+						cnt = min(cnt, Array[i][j]);
+					}
+				}
+			}
+		}
+	}
+	if (cnt == MAX) {
+		cout << "-1";
+	}
+	else {
+		cout << cnt;
+	}
+	return 0;
+}
