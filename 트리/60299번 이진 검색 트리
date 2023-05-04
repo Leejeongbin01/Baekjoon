@@ -1,0 +1,44 @@
+#include <iostream>
+using  namespace std;
+
+struct Node {
+	int data;
+	Node* left;
+	Node* right;
+};
+
+Node* insert(Node* n, int data) {
+	if (n == NULL) {
+		n = new Node();
+		n->data = data;
+		n->left = n->right = NULL;
+	}
+	else if (n->data > data) {
+		n->left = insert(n->left, data);
+	}
+	else {
+		n->right = insert(n->right, data);
+	}
+	return n;
+}
+
+void postorder(Node* n) {
+	if (n->left != NULL) {
+		postorder(n->left);
+	}
+	if (n->right != NULL) {
+		postorder(n->right);
+	}
+	cout << n->data << "\n";
+}
+
+int main() {
+	Node* root = NULL;
+	int val;
+
+	while (cin >> val) {
+		root = insert(root, val);
+	}
+	postorder(root);
+	return 0;
+}
