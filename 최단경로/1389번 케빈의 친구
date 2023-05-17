@@ -1,0 +1,60 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+#define MAX 987654321
+
+int arr[102][102];
+vector<int> v;
+
+int main() {
+	int N, M;
+	cin >> N >> M;
+	for (int i = 1; i <= N; i++) {
+		for (int j = 1; j <= N; j++) {
+			if (i == j) {
+				arr[i][j] = 0;
+			}
+			else {
+				arr[i][j] = MAX;
+			}
+		}
+	}
+	for (int i = 1; i <= M; i++) {
+		int a, b;
+		cin >> a >> b;
+		arr[a][b] = 1;
+		arr[b][a] = 1;
+	}
+	for (int k = 1; k <= N; k++) {
+		for (int i = 1; i <= N; i++) {
+			for (int j = 1; j <= N; j++) {
+				arr[i][j] = min(arr[i][j], arr[i][k] + arr[k][j]);
+			}
+		}
+	}
+	int tmp = 999;
+	int re = 0;
+	for (int i = 1; i <= N; i++) {
+		int s = 0;
+		for (int j = 1; j <= N; j++) {
+			if (arr[i][j] != MAX) {
+				s += arr[i][j];
+				
+			}
+		}
+		if (tmp > s) {
+			tmp = s;
+			re = i;
+		}
+	}
+	
+	//for (int i = 1; i <= N; i++) {
+	//	for (int j = 1; j <= N; j++) {
+	//		cout << arr[i][j] << " ";
+	//	}
+	//	cout << endl;
+	//}
+	cout << re;
+	return 0;
+}
