@@ -1,0 +1,37 @@
+#include <iostream>
+using namespace std;
+
+int arr[101][101];
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+
+	int n;
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			cin >> arr[i][j];
+		}
+	}
+	for (int k = 1; k <= n; k++) {
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= n; j++) {
+				if ((arr[i][k] != 0) && arr[k][j] != 0) {
+					// 조건문 내용은 거치는 간선을 의미하는데
+					// 둘다 0이 아닌것은 경로가 있다는 말이고
+					// 결국 i,j에 도달한다는 의미이다.
+					arr[i][j] = 1;
+				}
+			}
+		}
+	}
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= n; j++) {
+			cout << arr[i][j] << " ";
+		}
+		cout << endl;
+	}
+	return 0;
+}
