@@ -1,0 +1,113 @@
+#include <queue>
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int n;
+int cnt = 0;
+int cnt2 = 0;
+bool visit[101][101] = { false };
+bool visit2[101][101] = { false };
+
+char arr[101][101];
+int dx[] = { -1,1,0,0 };
+int dy[] = { 0,0,-1,1 };
+
+void bfs(int x, int y) {
+	queue<pair<int, int>> q;
+	q.push({x,y});
+	visit[x][y] = true;
+	char color = arr[x][y];
+
+	while (!q.empty()) {
+		int tmpx = q.front().first;
+		int tmpy = q.front().second;
+		q.pop();
+		for (int i = 0; i < 4; i++) {
+			int a = tmpx + dx[i];
+			int b = tmpy + dy[i];
+			if (a >= 0 && b >= 0 && a < n && b < n&&!visit[a][b]) {
+				if (arr[a][b] == color) {
+					q.push({ a,b });
+					visit[a][b] = true;
+				}
+			}
+		}
+	}
+}
+
+void bfs2(int x, int y) {
+	queue<pair<int, int>> q;
+	q.push({ x,y });
+	visit2[x][y] = true;
+	char color, color2;
+	if (arr[x][y] == 'R') {
+		color = 'R';
+		color2 = 'G';
+	}
+	else if (arr[x][y] == 'G') {
+		color2 = 'G';
+		color = 'R';
+	}
+	else {
+		color = 'B';
+		color2 = 'B';
+	}
+
+	while (!q.empty()) {
+		int tmpx = q.front().first;
+		int tmpy = q.front().second;
+		q.pop();
+		for (int i = 0; i < 4; i++) {
+			int a = tmpx + dx[i];
+			int b = tmpy + dy[i];
+			if (a >= 0 && b >= 0 && a < n && b < n && visit2[a][b] == false) {
+				if (arr[a][b] == color||arr[a][b]==color2) {
+					q.push({ a,b });
+					visit2[a][b] = true;
+				}
+			}
+		}
+	}
+}
+
+int main() {
+
+	cin >> n;
+	for (int i = 0; i < n; i++) {
+		string s;
+		cin >> s;
+		for (int j = 0; j < n; j++) {
+			arr[i][j] = s[j];
+		}
+	}
+
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (visit[i][j] == false) {
+				cnt++;
+				bfs(i, j);
+			}
+		}
+	}
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			if (visit2[i][j] == false) {
+				cnt2++;
+				bfs2(i, j);
+			}
+		}
+	}
+
+	cout << cnt << " " << cnt2;
+	/*for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			cout << arr[i][j] << " ";
+		}
+		cout << endl;
+	}*/
+
+
+	return 0;
+}
