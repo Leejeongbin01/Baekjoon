@@ -1,40 +1,42 @@
 #include <iostream>
+#include <unordered_map>
 #include <vector>
 #include <algorithm>
-#include <unordered_map>
-#include <set>
 using namespace std;
 
-unordered_map<string, int> v;
+unordered_map<string, int> m1;
+// 중복 제거할 겸, ++하려고
 
 bool cmp(pair<string, int>& a, pair<string, int>& b) {
 	if (a.second == b.second) {
 		if (a.first.length() == b.first.length()) {
-			return a.first < b.first;
+			return a.first < b.first; // 오름차순
 		}
 		else {
 			return a.first.length() > b.first.length();
+			//내림차순
 		}
 	}
 	else {
-		return a.second < b.second;
+		return a.second > b.second;
 	}
 }
 
 int main() {
 	int n, m;
 	cin >> n >> m;
+
 	for (int i = 0; i < n; i++) {
 		string s;
 		cin >> s;
 		if (s.size() >= m) {
-			v[s]++;
+			m1[s]++;
 		}
 	}
-	vector<pair<string, int>> vec(v.begin(), v.end());
-	sort(vec.begin(), vec.end(), cmp);
-	for (auto p : vec) {
-		cout << p.first << endl;
+	vector<pair<string, int>> v(m1.begin(), m1.end());
+	// 비교하기 위해 벡터 
+	sort(v.begin(), v.end(), cmp);
+	for (auto p : v) {
+		cout << p.first << "\n";
 	}
-	return 0;
 }
