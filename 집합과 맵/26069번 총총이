@@ -1,0 +1,23 @@
+#include <iostream>
+#include <vector>
+#include <set>
+using namespace std;
+
+set<string> s{ "ChongChong" };
+
+int main() {
+	int n;
+	cin >> n;
+
+	for (int i = 0; i < n; i++) {
+		string s1, s2;
+		cin >> s1 >> s2;
+
+		if (s.find(s1) != s.end() || s.find(s2) != s.end()) {
+			s.insert(s1);
+			s.insert(s2);
+		}
+	}
+	cout << s.size();
+	return 0;
+}
