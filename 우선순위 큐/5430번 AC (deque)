@@ -1,0 +1,98 @@
+#include <iostream>
+#include <deque>
+#include <string>
+using namespace std;
+
+
+int main() {
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
+
+	int T;
+	string p,input;
+	cin >> T;
+
+	int n;
+
+	for (int i = 0; i < T; i++) {
+		bool flag = true; // (1) 이면 원래 방향, (0) 이면 reverse
+		deque<int> d;
+		cin >> p;
+		cin >> n;
+		cin >> input;
+		string number = "";
+		int Check_D = 0;
+		for (int k = 0; k <input.size(); k++) {
+			if (isdigit(input[k])) {
+				number += input[k];
+			}
+			else {
+				if (!number.empty()) {
+					d.push_back(stoi(number));
+					number = "";
+				}
+			}
+		}
+		int org = d.size();
+		for (int j = 0; j < p.size(); j++) {
+			if (p[j] == 'R') {
+				if(flag==true){
+					flag = false;
+				}
+				else if (flag == false) {
+					flag = true;
+				}
+			}
+			else if (p[j] == 'D') {
+				Check_D++;
+				if (d.size() == 0) {
+					continue;
+				}
+				if (flag == true) {
+					// 원래 방향, 즉 앞에서 나가야함
+					d.pop_front();
+				}
+				else if (flag == false) {
+					// 반대 방향, 뒤에서 나가야함
+					d.pop_back();
+				}
+			}
+		}
+		if (Check_D > org) {
+			cout << "error\n";
+		}
+		else {
+			int len = d.size();
+			cout << "[";
+			for (int print = 0; print < len; print++) {
+				if (flag == true) {
+					// 앞에서부터 출력
+					int tmp = d.front();
+					d.pop_front();
+					if (d.size() == 0) {
+						cout << tmp;
+					}
+					else {
+						cout << tmp << ',';
+					}
+				}
+				else if (flag == false) {
+					// 뒤에서부터 출력
+					int tmp = d.back();
+					d.pop_back();
+					if (d.size() == 0) {
+						cout << tmp;
+					}
+					else {
+						cout << tmp << ',';
+					}
+				}
+			}
+			cout << "]\n";
+		}
+
+	}
+
+	return 0;
+}
