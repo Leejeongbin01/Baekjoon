@@ -1,0 +1,90 @@
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int board[500][500];
+int dx[] = { 0,0,1,-1 };
+int dy[] = { 1,-1,0,0 };
+int N, M;
+int ans;
+bool visit[500][500];
+int Bigger(int A, int B) { if (A > B) return A; return B; }
+
+void DFS(int x, int y, int sum, int cnt) {
+	visit[x][y] = true;
+	
+	if (cnt == 3) {
+		ans = Bigger(ans, sum);
+		return;
+	}
+
+	for (int i = 0; i < 4; i++) {
+		int nx = x + dx[i];
+		int ny = y + dy[i];
+		if (nx < 0 || ny < 0 || nx >= N || ny >= M) {
+			continue;
+		}
+		if (visit[nx][ny] == true) {
+			continue;
+		}
+		DFS(nx, ny, sum + board[nx][ny], cnt+1);
+		visit[nx][ny] = false;
+	}
+}
+
+void Shape1(int x, int y) {
+	int tmp = 0;
+	tmp = board[x][y] + board[x][y + 1] + board[x][y + 2] + board[x - 1][y + 1];
+	if (tmp > ans) {
+		ans = tmp;
+	}
+}
+void Shape2(int x, int y) {
+	int tmp = 0;
+	tmp = board[x][y] + board[x][y + 1] + board[x][y + 2] + board[x + 1][y + 1];
+	if (tmp > ans) {
+		ans = tmp;
+	}
+}
+void Shape3(int x, int y) {
+	int tmp = 0;
+	tmp = board[x][y] + board[x + 1][y] + board[x + 2][y] + board[x + 1][y + 1];
+	if (tmp > ans) {
+		ans = tmp;
+	}
+}
+void Shape4(int x, int y) {
+	int tmp = 0;
+	tmp = board[x][y] + board[x - 1][y + 1] + board[x][y + 1] + board[x + 1][y + 1];
+	if (tmp > ans) {
+		ans = tmp;
+	}
+}
+
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+
+	cin >> N >> M;
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < M; j++) {
+			cin >> board[i][j];
+		}
+	}
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < M; j++) {
+			memset(visit, false, sizeof(visit));
+			DFS(i, j, board[i][j], 0);
+			if (i - 1 >= 0 && j + 2 < M) Shape1(i, j);
+			if (i + 1 < N && j + 2 < M)Shape2(i, j);
+			if (i + 2 < N && j + 1 < M)Shape3(i, j);
+			if (i + 1 < N && i - 1 >= 0 && j + 1 < M)Shape4(i, j);
+		}
+	}
+
+	cout << ans;
+
+	return 0;
+}
