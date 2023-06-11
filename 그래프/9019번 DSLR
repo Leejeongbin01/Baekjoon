@@ -1,0 +1,63 @@
+#include <iostream>
+#include <string>
+#include <cstring>
+#include <queue>
+using namespace std;
+
+int a, b;
+bool visit[10000];
+
+void bfs() {
+	queue<pair<int, string>> q;
+	q.push({ a,"" });
+	visit[a] = true;
+	
+	while (!q.empty()) {
+		int tmpa = q.front().first;
+		string tmpStr = q.front().second;
+		q.pop();
+
+		if (tmpa == b) {
+			cout << tmpStr << endl;
+			return;
+		}
+
+		int D, S, L, R;
+		D = (tmpa * 2) % 10000;
+		if (!visit[D]) {
+			visit[D] = true;
+			q.push({ D,tmpStr + "D" });
+		}
+
+		S = tmpa == 0 ? 9999 : tmpa - 1;
+		if (!visit[S]) {
+			visit[S] = true;
+			q.push({ S,tmpStr + "S" });
+		}
+
+		L = (tmpa % 1000) * 10 + (tmpa / 1000);
+		if (!visit[L]) {
+			visit[L] = true;
+			q.push({ L,tmpStr + "L" });
+		}
+
+		R = (tmpa / 10) + (tmpa % 10) * 1000;
+		if (!visit[R]) {
+			visit[R] = true;
+			q.push({ R,tmpStr + "R" });
+		}
+	}
+}
+
+int main() {
+	int T;
+	cin >> T;
+	for (int i = 0; i < T; i++) {
+		cin >> a >> b;
+		memset(visit, false, sizeof(visit));
+		bfs();
+	}
+
+
+	return 0;
+}
