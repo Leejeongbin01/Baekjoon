@@ -1,0 +1,87 @@
+#include <iostream>
+#include <string>
+#include <cmath>
+using namespace std;
+
+// 1. 채널이 번호를 눌러서 만들 수 있는지 체크
+// 2. 목표 채널로부터 버튼으로 만들 수 있는 가장 가까운 채널 찾기
+// 3. 채널에서 자리수를 더해주면 됨
+
+int main() {
+	char button[11]; // 고장난 버튼 저장용도
+	bool channels[1000002]; // 버튼으로 가능한 채널을 탐색
+	int n, m;
+	cin >> n >> m;
+	for (int i = 0; i < m; i++) {
+		cin >> button[i];
+	}
+	string num;
+	int result1 = 99999999;
+	int result2 = 99999999;
+	if (n != 100) {
+		for (int i = 0; i < 1000001; i++) {
+			channels[i] = true;
+			num = to_string(i); 
+			for (int j = 0; j < m; j++) {
+				if (num.find(button[j]) != std::string::npos) 
+					//단어 찾기용
+					// find = 해당 문자가 있는지
+					// npos = 찾는 것이 없으면 npos반환
+					// npos를 반환하지 못하니깐 >> 찾는것이 있음
+				{
+					channels[i] = false;
+					break;
+					// 고장난 버튼이 포함되어 있으면 false;
+				}
+			}
+		}
+		channels[100] = true;
+
+		// 목표채널로부터 가장 가까운 채널을 찾음
+		for (int i = n; i >= 0; i--) {
+			if (channels[i]) {
+				result1 = i;
+				break;
+				// n보다 작은 채널에서 탐색
+			}
+		}
+		for (int i = n; i < n + abs(n - 100); i++) {
+			if (channels[i]) {
+				result2 = i;
+				break;
+			}
+		}
+		// n보다 큰 채널에서 탐색
+		// 절대값 100 이상은 어차피 100채널에서 +를 눌러서 가는 것이 효율적
+		
+
+		// 각 채널을 비교
+		int first = abs(result1 - n) + (to_string(result1).length());
+		int second = abs(result2 - n) + (to_string(result2).length());
+		int third = abs(100 - n);
+
+		if (first <= second) {
+			if (first < third) {
+				cout << first;
+			}
+			else {
+				cout << third;
+			}
+		}
+		else if (first > second) {
+			if (second > third) {
+				cout << third;
+			}
+			else {
+				cout << second;
+			}
+		}
+	}
+	else {
+		cout << 0;
+	}
+
+
+
+	return 0;
+}
