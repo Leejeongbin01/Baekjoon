@@ -1,0 +1,48 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int n, m;
+int arr[500000];
+vector<int> v;
+
+int getP(int x) {
+	if (arr[x] == x) {
+		return x;
+	}
+	return arr[x] = getP(arr[x]);
+}
+void unP(int x, int y) {
+	x = getP(x);
+	y = getP(y);
+	if (x > y) {
+		arr[y] = x;
+	}
+	else {
+		arr[x] = y;
+	}
+}
+
+int main() {
+	cin >> n >> m;
+	for (int i = 0; i < n; i++) {
+		arr[i] = i;
+	}
+
+	
+	for (int i = 0; i < m; i++) {
+		int a, b;
+		cin >> a >> b;
+		if (getP(a) == getP(b)) {
+			v.push_back(i + 1);
+		}
+		unP(a, b);
+	}
+	if (!v.empty()) {
+		cout << v[0];
+	}
+	else {
+		cout << 0;
+	}
+	return 0;
+}
