@@ -1,0 +1,66 @@
+#include <iostream>
+using namespace std;
+
+// 체킹후, 다시 조건 확인해서 결과값출력
+int People[53];
+int arrsize[53];
+int arr[53][53];
+
+int getP(int x) {
+	if (People[x] == x) {
+		return People[x];
+	}
+	return People[x] = getP(People[x]);
+}
+
+void UnP(int x, int y) {
+	x = getP(x);
+	y = getP(y);
+	if (x != y) {
+		if (x < y) {
+			People[y] = People[x];
+		}
+		else {
+			People[x] = People[y];
+		}
+	}
+}
+
+int main() {
+	int N, M, T;
+	cin >> N >> M >> T;
+	for (int i = 0; i <= N; i++) {
+		People[i] = i;
+	}
+	for (int i = 0; i < T; i++) {
+		int tmp;
+		cin >> tmp;
+		People[tmp] = 0;
+	}
+	
+	for (int i = 0; i < M; i++) {
+		int a, b;
+		cin >> a >> b;
+		arrsize[i] = a;
+		arr[i][0] = b;
+		for (int j = 1; j < a; j++) {
+			int tmp;
+			cin >> tmp;
+			arr[i][j] = tmp;
+			UnP(b, tmp);
+		}
+	}
+	int ans = M;
+
+	for (int i = 0; i < M; i++) {
+		for (int j = 0; j < arrsize[i]; j++) {
+			if (getP(arr[i][j]) == 0) {
+				ans--;
+				break;
+			}
+		}
+	}
+
+	cout << ans;
+	return 0;
+}
