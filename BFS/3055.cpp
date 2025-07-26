@@ -10,6 +10,9 @@ bool water_visit[51][51];
 int arr[51][51];
 queue<pair<int, pair<int,int>>> q;
 
+// q를 2개 사용하여, 해당 q의 사이즈만큼만 돌리는 것이 베스트임. 
+// 
+
 int bfs()
 {
     while(!q.empty()){
