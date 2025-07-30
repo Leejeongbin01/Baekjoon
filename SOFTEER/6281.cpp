@@ -1,19 +1,21 @@
 #include <iostream>
 #include <queue>
+#include <vector>
+#include <algorithm>
 #include <cstring>
 using namespace std;
 
 int N,M;
+int dx[4] = {0,0,1,-1};
+int dy[4] = {1,-1,0,0};
 int arr[101][101];
-int dx[4]={0,0,-1,1};
-int dy[4]={-1,1,0,0};
-int visit[101][101];
+bool visit[101][101];
 
-void bfs()
+void melt()
 {
-    queue<pair<int, int>> q;
-    q.push({1,1});
-    visit[1][1]= -1;
+    queue<pair<int,int>> q;
+    q.push({0,0});
+    visit[0][0]=true;
 
     while(!q.empty()){
         int x = q.front().first;
@@ -23,38 +25,51 @@ void bfs()
         for(int i=0; i<4; i++){
             int nx = x+dx[i];
             int ny = y+dy[i];
-            if(nx>=1 && ny>=1 && nx<=N && ny<=M){
-                if(arr[nx][ny]==1){
-                    visit[nx][ny]++;
-                }
-                else if(arr[nx][ny]==0 && visit[nx][ny]!=-1){
-                    visit[nx][ny]=-1;
+            if(nx>=0 && ny>=0 && nx<=N && ny<=M){
+                if(visit[nx][ny]==false && arr[nx][ny]==0){
                     q.push({nx,ny});
+                    visit[nx][ny]=true;
                 }
             }
         }
     }
 
+    queue<pair<int,int>> tmp;
     for(int i=1; i<=N; i++){
         for(int j=1; j<=M; j++){
-            if(visit[i][j]>=2){
-                arr[i][j]=0;
+            if(arr[i][j]==1){
+                int flag = 0;
+                for(int k=0; k<4; k++){
+                    if(visit[i+dx[k]][j+dy[k]]==true){
+                        flag++;
+                    }
+                }
+                if(flag >= 2){
+                    tmp.push({i,j});
+                }
             }
         }
+    }
+
+    while(!tmp.empty()){
+        int x = tmp.front().first;
+        int y = tmp.front().second;
+        tmp.pop();
+
+        arr[x][y]=0;
     }
 }
 
-bool checkIce()
+bool isIce()
 {
     for(int i=1; i<=N; i++){
         for(int j=1; j<=M; j++){
             if(arr[i][j]==1){
                 return false;
             }
-            //cout << arr[i][j] << " ";
         }
-        //cout << "\n";
     }
+
     return true;
 }
 
@@ -64,23 +79,31 @@ int main()
     cin.tie(NULL);
     cout.tie(NULL);
 
-    cin >> N >> M;    
-    for(int i=1; i<=N;  i++){
+    cin >> N >> M;
+    for(int i=1; i<=N; i++){
         for(int j=1; j<=M; j++){
             cin >> arr[i][j];
         }
     }
-    cout << "\n";
 
-    int time=1;
+    int time=0;
     while(1){
-        if(checkIce()){
+        if(isIce()){
             break;
         }
 
+        /*
+        for(int i=1; i<=N; i++){
+            for(int j=1; j<=M; j++){
+                cout << arr[i][j] << " ";
+            }
+            cout << endl;
+        }
+        */
+
         time++;
-        memset(visit,0,sizeof(visit));
-        bfs();
+        memset(visit,false,sizeof(visit));
+        melt();
     }
 
     cout << time << "\n";
